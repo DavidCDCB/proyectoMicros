@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 import os
 import sys
+import time
 
 def limpiar():
 	if(sys.platform.startswith('linux')):
@@ -8,16 +9,15 @@ def limpiar():
 	else:
 		os.system("cls")
 
-		
 def menu():
-	print("0-Agregar usuario")
-	print("1-Clonar proyecto")
-	print("2-Reportar cambio")
-	print("3-Comparar Local vs Remoto")
-	print("4-Adaptar cambios remotos")
-	print("5-Ver estado")
-	print("6-Subir cambios")		
-	acciones(input("\nOpción: "))
+	print("[0] Establecer usuario")
+	print("[1] Clonar proyecto")
+	print("[2] Reportar cambio")
+	print("[3] Comparar Local vs Remoto")
+	print("[4] Adquirir cambios remotos")
+	print("[5] Ver estado e historial")
+	print("[6] Subir cambios locales")		
+	acciones(input("Opción: "))
 
 def acciones(opt):
 	limpiar()
@@ -35,12 +35,13 @@ def acciones(opt):
 			os.system("mv scriptGit.py ./"+str(repo.split("/")[4].split(".")[0]))
 		else:
 			os.system("move scriptGit.py "+str(repo.split("/")[4].split(".")[0]))
-		
 		print("Script Movido!!!")
+		time.sleep(5)
+		exit()
 		
 	if(opt is "2"):
 		message=input("Descripción de cambio:")
-		os.system("git status")
+		os.system("git status -sb")
 		os.system("git add .")
 		os.system("git commit -m '"+str(message)+"'")
 		os.system("git log --graph --oneline")
@@ -49,9 +50,11 @@ def acciones(opt):
 		limpiar()
 		os.system("git fetch")
 		if(sys.platform.startswith('linux')):
-			os.system("git difftool --tool=diffuse master origin/master")
+			os.system("git difftool -y --tool=meld master origin/master")
 		else:
-			os.system("git diff master origin/master")
+			print("INGRESAR ':q' PARA SALIR DEL COMPARADOR")
+			input()
+			os.system("git difftool -y master origin/master")
 		
 	if(opt is "4"):
 		os.system("git merge")
@@ -68,8 +71,14 @@ def acciones(opt):
 		os.system("git push origin --all")
 
 limpiar()
-print("Script Git")
 
 while(True):
+	print("\n")
+	print(" __           _       _       ___ _ _  ") 
+	print("/ _\ ___ _ __(_)_ __ | |_    / _ (_) |_ ")
+	print("\ \ / __| '__| | '_ \| __|  / /_\/ | __|")
+	print("_\ \ (__| |  | | |_) | |_  / /_)\| | |_  ")
+	print("\__/\___|_|  |_| .__/ \__| \____/|_|\__|")
+	print("               |_|              ")
 	print("\n")
 	menu()
